@@ -1,0 +1,62 @@
+﻿@model GradingTable
+    <form method="post" asp-action="CreateParameter">
+        <div class="border p-3">
+            <div class="form-group row">
+                <h2 class="text-black-50 pl-3">Add parameter</h2>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <label>Parameter</label>
+                        </div>
+                        <div class="col-6">
+                            <label>Coefficient</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-6">
+                            <input asp-for="@Model.Parameter.Name" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <input asp-for="@Model.Parameter.Coefficient" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group row">
+                        <div class="col-1">
+                            <label>Mark</label>
+                        </div>
+                        <div class="col-11">
+                            <label>Description</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @for (int i = 1; i < 6; i++)
+                        {
+                            <div class="col-1">
+                                @Html.HiddenFor(x => x.MarkDescriptions.ToList()[i - 1].Mark)
+                                <label id="label{@i}" asp-for="@Model.MarkDescription.Mark">@i</label>
+                            </div>
+                            <div class="col-11">
+                                <input id="input{@i}" asp-for="@Model.MarkDescription.Description" class="form-control"/>
+                            </div>
+                            <br />
+                            <br />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-2 row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-info w-75" value="create" />
+                    </div>
+                    <div class="col">
+                        <a asp-action="ParameterTable" class="btn btn-danger w-75">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>

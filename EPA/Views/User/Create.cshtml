@@ -1,0 +1,101 @@
+﻿@model UserTable
+    <script type="text/javascript" src="/js/RoleAwait.js"></script>
+<body onload="rolefun(document.getElementById('role').value, document.getElementById('departmentSelect').value);">
+    <form method="post" asp-action="Create">
+        <div class="border p-3">
+            <div class="form-group row">
+                <h2 class="text-black-50 pl-3">Add user</h2>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label>First name</label>
+                        </div>
+                        <div class="col-3">
+                            <label>Last name</label>
+                        </div>
+                        <div class="col-3">
+                            <label id="loginLabel">Login</label>
+                        </div>
+                        <div class="col-3">
+                            <label id="passwordLabel">Password</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <input asp-for="@Model.User.FirstName" class="form-control" />
+                        </div>
+                        <div class="col-3">
+                            <input asp-for="@Model.User.LastName" class="form-control" />
+                        </div>
+                        <div class="col-3">
+                            <input id="login" asp-for="@Model.User.Login" class="form-control" />
+                        </div>
+                        <div class="col-3">
+                            <input id="password" asp-for="@Model.User.Password" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label>Department</label>
+                        </div>
+                        <div class="col-3">
+                            <label>Role</label>
+                        </div>
+                        <div class="col-3">
+                            <label>Status</label>
+                        </div>
+                        <div class="col-3">
+                            <label id="supervisorLabel">Supervisor</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-3">
+                            @*<script type="text/javascript" src="/js/SupervisorClear.js"></script>*@
+                            <select id="departmentSelect" asp-for="@Model.User.DepartmentId" onchange="rolefun(document.getElementById('role').value, this.value);">
+                                @foreach (Department department in Model.Departments)
+                                {
+                                    <option value="@department.Id">@department.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select id="role" asp-for="@Model.User.RoleId" onchange="rolefun(this.value, document.getElementById('departmentSelect').value);">
+                                <option value="1">Admin</option>
+                                <option value="2">Employee</option>
+                                <option value="3">Team lead</option>
+                                <option value="4">Head of department</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select id="status" asp-for="@Model.User.StatusId">
+                                <option value="1">Active</option>
+                                <option value="2">Fired</option>
+                                <option value="3">On vacantion</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select id="supervisorSelect" asp-for="@Model.User.SupervisorId">
+                                @foreach (User user in Model.Users)
+                                {
+                                    <option class="supervisors" id="@user.DepartmentId" name="@user.RoleId" value="@user.Id">@user.FirstName @user.LastName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-8 offset-2 row">
+                            <div class="col">
+                                <input type="submit" class="btn btn-info w-75" value="create" />
+                            </div>
+                            <div class="col">
+                                <a asp-action="UserTable" class="btn btn-danger w-75">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>

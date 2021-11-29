@@ -1,0 +1,62 @@
+﻿@model GradingTable
+
+<div class="container p-3">
+    <div align="center">
+        <h2>Selection list</h2>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-6">
+            <a asp-controller="Grade" asp-action="Create" class="btn btn-primary">Create new selection</a>
+        </div>
+    }
+</div>
+
+
+<form action="handler.php">
+    @foreach (var department in Model.Departments)
+    {
+        <h2 class="text-primary">@department.Name</h2>
+
+        @foreach (var grading in Model.Gradings)
+        {                   
+            if (grading.Id == (from sel in Model.Selections 
+                               where sel.DepartmentId == department.Id && sel.GradingId == grading.Id 
+                               select sel.Grading.Id).FirstOrDefault())
+            {
+                <div class="row">
+                    <h2>@grading.Name</h2>
+                    @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Grade" asp-action="Update" asp-route-Id="@grading.Id" class="btn btn-primary" style="width: 15%; margin-left: 20px">Update</a>
+                            <a asp-controller="Grade" asp-action="Delete" asp-route-Id="@grading.Id" class="btn btn-danger" style="width: 15%; margin-left: 5px ">Delete</a>
+                        }
+                </div>
+                
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Parameter
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var selection in Model.Selections)
+                        {
+                            @if (selection.DepartmentId == department.Id && selection.GradingId == grading.Id)
+                            {
+                                <tr>
+                                    <td width="25%">@selection.Parameter.Name</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+
+        }
+
+
+    }
+</form>
